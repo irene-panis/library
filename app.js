@@ -10,12 +10,11 @@ const errorMessage = document.getElementById("error-msg");
 const titleBox = document.getElementById("title");
 const authorBox = document.getElementById("author");
 const pagesBox = document.getElementById("pages");
-const readBox = document.getElementById("read");
 
 var bookTitle = document.getElementById("title").value;
 var bookAuthor = document.getElementById("author").value;
 var bookPages = document.getElementById("pages").value;
-var bookRead = document.getElementById("read").value;
+var bookRead = document.getElementById("read").checked;
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -79,7 +78,7 @@ function checkValues() {
   bookTitle = document.getElementById("title").value;
   bookAuthor = document.getElementById("author").value;
   bookPages = document.getElementById("pages").value;
-  bookRead = document.getElementById("read").value;
+  bookRead = document.getElementById("read").checked;
 }
 
 function isEmpty() {
