@@ -5,6 +5,17 @@ const bookForm = document.querySelector("form");
 const addButton = document.getElementById("open-form");
 const cancelButton = document.getElementById("cancel");
 const submitButton = document.getElementById("submit-book");
+const errorMessage = document.getElementById("error-msg");
+
+const titleBox = document.getElementById("title");
+const authorBox = document.getElementById("author");
+const pagesBox = document.getElementById("pages");
+const readBox = document.getElementById("read");
+
+var bookTitle = document.getElementById("title").value;
+var bookAuthor = document.getElementById("author").value;
+var bookPages = document.getElementById("pages").value;
+var bookRead = document.getElementById("read").value;
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -13,17 +24,20 @@ function Book(title, author, pages, read) {
   this.read = read;
 }
 
-function addBookToLibrary(book) {
+function addBookToLibrary() {
+  checkValues();
+  var book = new Book(bookTitle, bookAuthor, bookPages, bookRead);
   myLibrary.push(book);
 }
 
 var hungergames = new Book("The Hunger Games", "Suzanne Collins", "200", true);
 var catchingfire = new Book("Catching Fire", "Suzanne Collins", "300", true);
 
-addBookToLibrary(hungergames);
-addBookToLibrary(catchingfire);
+myLibrary.push(hungergames);
+myLibrary.push(catchingfire);
 
 function iterate() {
+  clearBooks();
 	for (const book of myLibrary) {
   	var row = booklist.insertRow(-1);
     var cell1 = row.insertCell(0);
@@ -37,29 +51,86 @@ function iterate() {
   }
 }
 
+function clearBooks() {
+  booklist.innerHTML = `<tr>
+  <th>Title</th>
+  <th>Author</th>
+  <th>Pages</th>
+  <th>Read?</th>
+</tr>`;
+}
+
 function openForm() {
   bookForm.style.display = "block";
+  addButton.style.display = "none";
 }
 
 function closeForm() {
   bookForm.style.display = "none";
-}
-
-function showButton() {
+  errorMessage.style.display = "none";
   addButton.style.display = "block";
-}
-function hideButton() {
-  addButton.style.display = "none";
-}
-
-addButton.onclick = function() {
-  hideButton();
-  openForm();
+  titleBox.classList.remove("error");
+  authorBox.classList.remove("error");
+  pagesBox.classList.remove("error");
+  bookForm.reset();
 }
 
-cancelButton.onclick = function() {
-  showButton();
-  closeForm();
+function checkValues() {
+  bookTitle = document.getElementById("title").value;
+  bookAuthor = document.getElementById("author").value;
+  bookPages = document.getElementById("pages").value;
+  bookRead = document.getElementById("read").value;
 }
+
+function isEmpty() {
+  checkValues();
+  if ((bookTitle === '')
+  || (bookAuthor === '')
+  || (bookPages === '')) {
+    return true;
+  } 
+  return false;
+}
+
+function showError() {
+  checkValues();
+  if (bookTitle === '') {
+    titleBox.classList.add("error");
+  }
+  if (bookAuthor === '') {
+    authorBox.classList.add("error");
+  }
+  if (bookPages === '') {
+    pagesBox.classList.add("error");
+  }
+}
+
+function submitBook(event) {
+  if (isEmpty()) {
+    showError();
+    errorMessage.style.display = "block";
+  } else {
+    addBookToLibrary();
+    iterate();
+    closeForm();
+  }
+  event.preventDefault();
+}
+
+addButton.addEventListener('click', openForm);
+cancelButton.addEventListener('click', closeForm);
+submitButton.addEventListener('click', submitBook);
+
+titleBox.addEventListener('input', () => {
+  titleBox.classList.remove("error");
+});
+
+authorBox.addEventListener('input', () => {
+  authorBox.classList.remove("error");
+});
+
+pagesBox.addEventListener('input', () => {
+  pagesBox.classList.remove("error");
+});
 
 iterate();
