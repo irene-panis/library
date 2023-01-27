@@ -21,3 +21,12 @@ th, td {
 form {
   display: none;
 }
+
+.error {
+  background-color: lightcoral;
+  border: 2px solid red;
+}
+
+#error-msg {
+  color: red;
+}
