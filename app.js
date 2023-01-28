@@ -16,6 +16,15 @@ var bookAuthor = document.getElementById("author").value;
 var bookPages = document.getElementById("pages").value;
 var bookRead = document.getElementById("read").checked;
 
+var readButton = function(read) {
+  if (read) {
+    return "<button type='button' class='toggle'>Read</button>";
+  } else {
+    return "<button type='button' class='toggle'>Unread</button>";
+  }
+}
+
+
 function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
@@ -29,29 +38,34 @@ function addBookToLibrary() {
   myLibrary.push(book);
 }
 
-var hungergames = new Book("The Hunger Games", "Suzanne Collins", "200", true);
-var catchingfire = new Book("Catching Fire", "Suzanne Collins", "300", true);
+var hungergames = new Book("The Hunger Games", "Suzanne Collins", 384, true);
+var catchingfire = new Book("Catching Fire", "Suzanne Collins", 391, true);
 
 myLibrary.push(hungergames);
 myLibrary.push(catchingfire);
 
 function iterate() {
   clearBooks();
+  let i = 0;
 	for (const book of myLibrary) {
   	var row = booklist.insertRow(-1);
-    var cell1 = row.insertCell(0);
-  	var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-  	var cell4 = row.insertCell(3);
+    var del = row.insertCell(0);
+    var cell1 = row.insertCell(1);
+  	var cell2 = row.insertCell(2);
+    var cell3 = row.insertCell(3);
+  	var cell4 = row.insertCell(4);
+    del.innerHTML += `<img class="delete" data-index=${i + 1} src='img/delete-icon.svg' height='22px' width='22px'>`;
+    i++;
     cell1.innerHTML += book.title;
     cell2.innerHTML += book.author;
     cell3.innerHTML += book.pages;
-    cell4.innerHTML += book.read;
+    cell4.innerHTML += readButton(book.read);
   }
 }
 
 function clearBooks() {
   booklist.innerHTML = `<tr>
+  <th><img id="invisible" src='img/delete-icon.svg' height='22px' width='22px'></th>
   <th>Title</th>
   <th>Author</th>
   <th>Pages</th>
@@ -116,6 +130,14 @@ function submitBook(event) {
   event.preventDefault();
 }
 
+function deleteBook(row) {
+  booklist.deleteRow(row);
+}
+
+function toggleRead(book) {
+  book.read = !book.read;
+}
+
 addButton.addEventListener('click', openForm);
 cancelButton.addEventListener('click', closeForm);
 submitButton.addEventListener('click', submitBook);
@@ -130,6 +152,22 @@ authorBox.addEventListener('input', () => {
 
 pagesBox.addEventListener('input', () => {
   pagesBox.classList.remove("error");
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains("delete")) {
+    booklist.deleteRow(e.target.dataset.index);
+    myLibrary.splice(e.target.dataset.index - 1, 1);
+    iterate(); // reassigns index values to rows after deletion
+  };
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains("toggle")) {
+    toggleRead(e.target);
+    console.log(e.currentTarget);
+    iterate();
+  };
 });
 
 iterate();
