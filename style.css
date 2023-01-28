@@ -1,6 +1,23 @@
 html, body {
   margin: 0;
   padding: 0;
+  font-family: Meera;
+  background-color: #e2d2ba;
+}
+
+@font-face {
+  font-family: Lobster;
+  src: url("fonts/Lobster.ttf");
+}
+
+@font-face {
+  font-family: Yantra;
+  src: url("fonts/Yantramanav.ttf");
+}
+
+@font-face {
+  font-family: Meera;
+  src: url("fonts/MeeraInimai.ttf");
 }
 
 .container {
@@ -9,13 +26,77 @@ html, body {
   align-items: center;
 }
 
-table, th, td {
-  border: 1px solid black;
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-family: Lobster;
+  font-size: 6em;
+  margin: 0;
+  color: seagreen;
+}
+
+h2 {
+  font-family: Yantra;
+  font-size: 1em;
+  text-transform: lowercase;
+  position: relative;
+  bottom: 30px;
+  right: 35px;
+}
+
+.add-new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+form {
+  border: 5px solid seagreen;
+  background-color: rgb(237, 106, 90, 0.3);
+  border-radius: 20px;
+  padding: 20px 30px;
+  text-transform: lowercase;
+  font-style: italic;
+}
+
+#open-form {
+  appearance: none;
+  padding: 20px 75px;
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 1em;
+  background: seagreen;
+  color: white;
+  font-weight: bolder;
+  border: none;
+  border-radius: 40px;
+  transition: 0.4s;
+}
+
+#open-form:hover {
+  background: rgb(28, 83, 52);
+}
+
+#open-form:active {
+  background: rgb(18, 54, 34);
+  scale: 0.9;
+}
+
+table {
+  border-left: none;
+  border-collapse: collapse;
 }
 
 th, td {
   padding-top: 5px;
   padding-bottom: 5px;
+  text-align: center;
 }
 
 form {
@@ -29,4 +110,30 @@ form {
 
 #error-msg {
   color: red;
+}
+
+tr:nth-child(2n+1) {
+  background-color: rgb(237, 106, 90, 0.3);
+}
+
+td:nth-child(1) {
+  background-color: none;
+  border: none;
+}
+
+th:nth-child(1) {
+  background: none;
+  border: none;
+}
+
+#invisible {
+  opacity: 0;
+}
+
+.delete {
+  transition: 0.3s;
+}
+
+.delete:hover {
+  filter: invert(50%) sepia(2%) saturate(7%) hue-rotate(352deg) brightness(99%) contrast(91%);
 }
