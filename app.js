@@ -16,11 +16,11 @@ var bookAuthor = document.getElementById("author").value;
 var bookPages = document.getElementById("pages").value;
 var bookRead = document.getElementById("read").checked;
 
-var readButton = function(read) {
+var readButton = function(read, index) {
   if (read) {
-    return "<button type='button' class='toggle'>Read</button>";
+    return `<button type='button' data-index=${index} id='checked' class='toggle'>Read</button>`;
   } else {
-    return "<button type='button' class='toggle'>Unread</button>";
+    return `<button type='button' data-index=${index} id='unchecked' class='toggle'>Unread</button>`;
   }
 }
 
@@ -38,11 +38,13 @@ function addBookToLibrary() {
   myLibrary.push(book);
 }
 
-var hungergames = new Book("The Hunger Games", "Suzanne Collins", 384, true);
-var catchingfire = new Book("Catching Fire", "Suzanne Collins", 391, true);
-
-myLibrary.push(hungergames);
-myLibrary.push(catchingfire);
+function initialize() {
+  var hungergames = new Book("The Hunger Games", "Suzanne Collins", 384, true);
+  var catchingfire = new Book("Catching Fire", "Suzanne Collins", 391, true);
+  
+  myLibrary.push(hungergames);
+  myLibrary.push(catchingfire);
+}
 
 function iterate() {
   clearBooks();
@@ -55,11 +57,11 @@ function iterate() {
     var cell3 = row.insertCell(3);
   	var cell4 = row.insertCell(4);
     del.innerHTML += `<img class="delete" data-index=${i + 1} src='img/delete-icon.svg' height='22px' width='22px'>`;
-    i++;
     cell1.innerHTML += book.title;
     cell2.innerHTML += book.author;
     cell3.innerHTML += book.pages;
-    cell4.innerHTML += readButton(book.read);
+    cell4.innerHTML += readButton(book.read, i);
+    i++;
   }
 }
 
@@ -88,6 +90,7 @@ function closeForm() {
   bookForm.reset();
 }
 
+// ensures variables are updated with current values
 function checkValues() {
   bookTitle = document.getElementById("title").value;
   bookAuthor = document.getElementById("author").value;
@@ -134,6 +137,7 @@ function deleteBook(row) {
   booklist.deleteRow(row);
 }
 
+// toggle book.read boolean
 function toggleRead(book) {
   book.read = !book.read;
 }
@@ -154,6 +158,7 @@ pagesBox.addEventListener('input', () => {
   pagesBox.classList.remove("error");
 });
 
+// adds event listeners to delete buttons
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains("delete")) {
     booklist.deleteRow(e.target.dataset.index);
@@ -162,12 +167,13 @@ document.addEventListener('click', (e) => {
   };
 });
 
+// adds event listeners to read/unread toggle switch
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains("toggle")) {
-    toggleRead(e.target);
-    console.log(e.currentTarget);
+    toggleRead(myLibrary[e.target.dataset.index]);
     iterate();
   };
 });
 
-iterate();
+initialize(); // add example books right off the bat
+iterate(); // display example array
